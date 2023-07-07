@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-//@Api(tags = "Packaging API")
 public class PackageController {
 
     private final PackageService packageService;
@@ -23,8 +22,7 @@ public class PackageController {
     }
 
     @PostMapping("/package")
-    //@ApiOperation("Pack items into a package")
-    public ResponseEntity<PackageResponse> packItems(/*@ApiParam(value = "Package request", required = true)*/@RequestBody PackageRequest packageRequest) {
+    public ResponseEntity<PackageResponse> packItems(@RequestBody PackageRequest packageRequest) {
         packageService.validateRequest(packageRequest);
 
         List<Item> items = packageRequest.getItems();
