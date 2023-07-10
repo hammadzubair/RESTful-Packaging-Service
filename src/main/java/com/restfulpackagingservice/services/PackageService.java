@@ -10,25 +10,26 @@ import java.util.List;
 @Service
 public class PackageService {
 
-        public List<Integer> findOptimalItems(List<Item> items, double maxWeight) {
-            int n = items.size();
-            int[][] dp = new int[n + 1][(int) (maxWeight + 1)];
+    public List<Integer> findOptimalItems(List<Item> items, double maxWeight) {
+        int n = items.size();
+        double[][] dp = new double[n + 1][(int) (maxWeight + 1)];
 
-            for (int i = 1; i <= n; i++) {
-                Item currentItem = items.get(i - 1);
-                for (int j = 0; j <= maxWeight; j++) {
-                    if (currentItem.getWeight() <= j) {
-                        dp[i][j] = Math.max(dp[i - 1][j], (int) (currentItem.getPrice() + dp[i - 1][(int) (j - currentItem.getWeight())]));
-                    } else {
-                        dp[i][j] = dp[i - 1][j];
-                    }
+        for (int i = 1; i <= n; i++) {
+            Item currentItem = items.get(i - 1);
+            for (int j = 0; j <= maxWeight; j++) {
+                if (currentItem.getWeight() <= j) {
+                    dp[i][j] = Math.max(dp[i - 1][j], currentItem.getPrice() + dp[i - 1][(int) (j - currentItem.getWeight())]);
+                } else {
+                    dp[i][j] = dp[i - 1][j];
                 }
             }
-
-            return getSelectedItems(dp, items, n, (int) maxWeight);
         }
 
-        public List<Integer> getSelectedItems(int[][] dp, List<Item> items, int n, int maxWeight) {
+        return getSelectedItems(dp, items, n, (int) maxWeight);
+    }
+
+
+    public List<Integer> getSelectedItems(double[][] dp, List<Item> items, int n, int maxWeight) {
             List<Integer> selectedItems = new ArrayList<>();
             int i = n;
             int j = maxWeight;
